@@ -1,98 +1,219 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { ScreenWrapper } from '@/components/ScreenWrapper';
+import { IconSymbol } from '@/components/ui/icon-symbol';
+import { useTheme } from '@/context/ThemeContext';
+import { useRouter } from 'expo-router';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const router = useRouter();
+  const { theme, toggleTheme, colors } = useTheme();
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  return (
+    <ScreenWrapper>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Encabezado */}
+        <View style={styles.header}>
+          <Pressable onPress={toggleTheme} style={styles.themeButton}>
+            <IconSymbol 
+              name={theme === 'dark' ? 'sun.max.fill' as any : 'moon.fill' as any} 
+              size={28} 
+              color={colors.text} 
+            />
+          </Pressable>
+          <Image 
+            source={{ uri: 'https://unavatar.io/github/37t?fallback=https://source.boringavatars.com/marble/120/1337_user?colors=264653r,2a9d8f,e9c46a,f4a261,e76f51' }} 
+            style={[styles.avatar, { borderColor: colors.surfaceHighlight }]} 
+          />
+        </View>
+
+        <View style={styles.welcomeContainer}>
+          <Text style={[styles.greeting, { color: colors.text }]}>Hola! Maestro Pokemon 👋</Text>
+          <Text style={[styles.subtitle, { color: colors.icon }]}>Listos para atrapar tu siguiente pokemon?</Text>
+        </View>
+
+        {/* Tarjeta Principal */}
+        <Pressable 
+          style={[styles.mainCard, { backgroundColor: colors.primary }]}
+          onPress={() => router.push('/(tabs)/search' as any)}
+        >
+          <View style={styles.mainCardContent}>
+            <View>
+              <Text style={styles.mainCardTitle}>Pokédex</Text>
+              <Text style={styles.mainCardSubtitle}>Explora todos los Pokemon</Text>
+            </View>
+            <View style={styles.iconContainer}>
+              <IconSymbol name="book.fill" size={32} color="#FFF" />
+            </View>
+          </View>
+          <Image 
+            source={{ uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png' }} 
+            style={styles.pokeballBg}
+            resizeMode="contain"
+          />
+        </Pressable>
+
+        {/* Sección de Noticias */}
+        <View style={styles.sectionHeader}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>Noticias Pokémon</Text>
+        </View>
+
+        <View style={styles.newsContainer}>
+          <View style={[styles.newsCard, { backgroundColor: colors.surface, borderColor: colors.surfaceHighlight }]}>
+            <View style={styles.newsContent}>
+              <Text style={[styles.newsTitle, { color: colors.text }]}>¡Evento de Comunidad!</Text>
+              <Text style={[styles.newsDate, { color: colors.icon }]}>23 Nov 2025</Text>
+              <Text style={[styles.newsSnippet, { color: colors.icon }]}>
+                Prepárate para capturar a Bulbasaur shiny este fin de semana. ¡No te lo pierdas!
+              </Text>
+            </View>
+            <Image 
+              source={{ uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png' }} 
+              style={styles.newsImage}
+            />
+          </View>
+
+          <View style={[styles.newsCard, { backgroundColor: colors.surface, borderColor: colors.surfaceHighlight }]}>
+            <View style={styles.newsContent}>
+              <Text style={[styles.newsTitle, { color: colors.text }]}>Nueva Región Descubierta</Text>
+              <Text style={[styles.newsDate, { color: colors.icon }]}>20 Nov 2025</Text>
+              <Text style={[styles.newsSnippet, { color: colors.icon }]}>
+                Los investigadores han encontrado rastros de una nueva región llena de Pokémon misteriosos.
+              </Text>
+            </View>
+            <Image 
+              source={{ uri: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png' }} 
+              style={styles.newsImage}
+            />
+          </View>
+        </View>
+
+      </ScrollView>
+    </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  scrollContent: {
+    padding: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  themeButton: {
+    padding: 8,
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 2,
+  },
+  welcomeContainer: {
+    marginBottom: 24,
+  },
+  greeting: {
+    fontSize: 32,
+    fontWeight: 'bold',
+  },
+  subtitle: {
+    fontSize: 16,
+    marginTop: 4,
+  },
+  searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    padding: 16,
+    borderRadius: 16,
+    marginBottom: 32,
+    borderWidth: 1,
+    gap: 12,
   },
-  stepContainer: {
-    gap: 8,
+  searchPlaceholder: {
+    fontSize: 16,
+  },
+  mainCard: {
+    height: 300,
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 32,
+    overflow: 'hidden',
+    position: 'relative',
+    justifyContent: 'center',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.4,
+    shadowRadius: 12,
+    elevation: 10,
+  },
+  mainCardContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  mainCardTitle: {
+    color: '#FFF',
+    fontSize: 32,
+    fontWeight: 'bold',
+  },
+  mainCardSubtitle: {
+    color: 'rgba(255,255,255,0.8)',
+    fontSize: 16,
+    marginTop: 8,
+  },
+  iconContainer: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    padding: 16,
+    borderRadius: 24,
+  },
+  pokeballBg: {
+    position: 'absolute',
+    right: -40,
+    bottom: -40,
+    width: 300,
+    height: 300,
+    opacity: 0.2,
+    transform: [{ rotate: '-20deg' }],
+  },
+  sectionHeader: {
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  newsContainer: {
+    gap: 16,
+  },
+  newsCard: {
+    borderRadius: 20,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    gap: 16,
+  },
+  newsContent: {
+    flex: 1,
+  },
+  newsTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  newsDate: {
+    fontSize: 12,
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  newsSnippet: {
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  newsImage: {
+    width: 80,
+    height: 80,
   },
 });

@@ -1,50 +1,81 @@
-# Welcome to your Expo app 👋
+# Mini Pokédex - React Native
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicación móvil desarrollada en React Native con Expo que consume una API propia (backend) para mostrar un listado de Pokémon y sus detalles.
 
-## Get started
+## Comenzando
 
-1. Install dependencies
+### Prerrequisitos
+
+- Node.js
+- npm o yarn
+- Expo CLI
+
+### Instalación
+
+1. Clona el repositorio:
+
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   cd pokemon-frontend
+   ```
+
+2. Instala las dependencias:
 
    ```bash
    npm install
    ```
 
-2. Start the app
+3. Configura las variables de entorno:
+   Crea un archivo `.env` en la raíz del proyecto y añade la URL de tu backend:
+
+   ```env
+   EXPO_PUBLIC_BACKEND_URL=http://tu-backend-url.com
+   ```
+
+4. Ejecuta la aplicación:
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+## Funcionalidades
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- **Listado de Pokémon**: Scroll infinito con paginación desde el backend.
+- **Detalle de Pokémon**: Muestra imagen, tipos, habilidades y estadísticas base.
+- **Búsqueda**: Encuentra Pokémon por nombre.
+- **Favoritos**: Guarda tus Pokémon favoritos (persistencia local).
+- **Modo Oscuro**: Soporte para tema oscuro y claro.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Tecnologías
 
-## Get a fresh project
+- **Frontend**: React Native, Expo, TypeScript.
+- **Navegación**: Expo Router.
+- **Estilos**: StyleSheet, Moti (animaciones).
+- **Estado**: Context API.
+- **HTTP Client**: Axios.
 
-When you're ready, run:
+## Manejo de Favoritos
 
-```bash
-npm run reset-project
-```
+El sistema de favoritos se ha implementado utilizando una arquitectura robusta y reactiva:
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+1. **Context API (`FavoritesContext`)**:
+    - Se utiliza un contexto global para manejar el estado de los favoritos en toda la aplicación.
+    - Esto permite que cualquier componente (Listado, Detalle, Pantalla de Favoritos) reaccione instantáneamente a los cambios.
 
-## Learn more
+2. **Persistencia (`AsyncStorage`)**:
+    - Los IDs de los Pokémon favoritos se guardan localmente en el dispositivo.
+    - Al iniciar la app, se recuperan estos datos para mantener la selección del usuario entre sesiones.
 
-To learn more about developing your project with Expo, look at the following resources:
+3. **Feedback de Usuario (`ToastContext`)**:
+    - Se implementó un sistema de notificaciones tipo "Toast" personalizado.
+    - Al agregar o eliminar un favorito, el usuario recibe una confirmación visual animada en la parte inferior de la pantalla.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Tiempo de Desarrollo Frontend
 
-## Join the community
+- **Inicio**: 23/11/2024
+- **Fin**: 23/11/2024
+- **Tiempo estimado**: 4 horas
 
-Join our community of developers creating universal apps.
+## Diseño
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Basado en la exploración de diseño de Figma: [Pokemon Mobile App Exploration](https://www.figma.com/design/hVxMhMK4CqtVqfo4MYNbGz/Pokemon-Mobile-App-Exploration--Community-?node-id=1-204&p=f)
